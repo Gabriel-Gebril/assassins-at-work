@@ -1,0 +1,24 @@
+{
+  "name": "assassins-at-work",
+  "version": "1.0.0",
+  "description": "Create and manage a game of workplace assassins using a slack bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gabriel-Gebril/assassins-at-work.git"
+  },
+  "author": "Gabriel Gebril",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gabriel-Gebril/assassins-at-work/issues"
+  },
+  "homepage": "https://github.com/Gabriel-Gebril/assassins-at-work#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "express": "^4.16.3",
+    "slackbots": "^1.1.0"
+  }
+}
