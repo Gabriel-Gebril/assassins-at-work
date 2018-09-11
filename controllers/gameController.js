@@ -19,5 +19,6 @@ exports.createGame = async function (req, res) {
                 });
             }
         )
+    res.send(200);
 
 }
