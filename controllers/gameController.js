@@ -15,7 +15,7 @@ exports.createGame = async function (req, res) {
         .then(
             channel => {
                 channel.members.array.forEach(element => {
-                    await games.add({ channel: channel_id, newAssassin: element, newTarget: "null" })
+                    games.add({ channel: channel_id, newAssassin: element, newTarget: "null" })
                 });
             }
         )
