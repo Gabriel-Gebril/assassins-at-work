@@ -1,8 +1,8 @@
 var express = require('express');
-var game = require("../controllers/gameController")
+var games = require("../controllers/gameController")
 var router = express.Router();
 
-router.get("/games");
+router.get("/games", games.createGame);
 
 
 module.exports = router;

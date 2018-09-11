@@ -21,6 +21,10 @@ exports.update = async function (obj) {
     return (await db.query(sql));
 }
 
+exports.find = async function (obj) {
+    var sql = `SELECT * FROM ${obj.channel} WHERE ${obj.atr} = '${obj.value}'`
+}
+
 exports.removeByA = async function (obj) {
     var sql = `DELETE FROM ${obj.channel} WHERE assassin='${obj.assassin}'`;
     return (await db.query(sql));
