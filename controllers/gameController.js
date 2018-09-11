@@ -19,6 +19,7 @@ exports.createGame = async function (req, res) {
                 });
             }
         )
+    console.log("slack");
     res.send(200);
 
 }
