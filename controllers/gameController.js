@@ -43,7 +43,10 @@ exports.createGame = async function (req, res) {
         let info = await exBot.users.info({ user: userE });
         assassins[i] = { id: info.user.id, name: info.user.name, is_bot: info.user.is_bot };
     }
-    assassins.filter(e => !e.is_bot);
+    assassins.filter(e => {
+        console.log(!e.is_bot);
+        return !e.is_bot;
+    });
     console.log(assassins);
     assassins = shuffle(assassins);
     let targets = [];
