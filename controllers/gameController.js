@@ -40,7 +40,7 @@ exports.createGame = async function (req, res) {
     assassins = assassins.channel.members;
     for (let i = 0; i < assassins.length; i++) {
         const element = assassins[i];
-        const info = await exBot.users.info(element);
+        let info = await exBot.users.info(element);
         assassins[i] = { id: info.user.id, name: info.user.name, is_bot: info.user.is_bot };
     }
     assassins.filter(e => !e.is_bot);
