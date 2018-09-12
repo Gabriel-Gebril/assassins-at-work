@@ -3,6 +3,12 @@ var games = require("../models/game"),
     SlackBot = require('slackbots'),
     Slack = require('slack');
 
+
+const bot = new SlackBot({
+    token: 'xoxb-433184420918-431115080656-2QXNfwtoakG3TnQlznvkA7Hl',
+    name: "overseeer"
+})
+
 //This slackbot is here to extend the normal bot
 const exBot = new Slack({ token: "xoxp-433184420918-431721615043-431722118451-6fc88091b918e2a560bbaace8a91ddfd" });
 
