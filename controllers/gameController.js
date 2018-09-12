@@ -41,7 +41,7 @@ exports.createGame = async function (req, res) {
     for (let i = 0; i < assassins.length; i++) {
         const userE = assassins[i];
         let info = await exBot.users.info({ user: userE });
-        assassins[i] = { id: info.user.id, name: info.user.name, is_bot: info.user.is_bot };
+        assassins[i] = { id: info.user.id, name: info.user.real_name, is_bot: info.user.is_bot };
     }
     assassins = assassins.filter(e => {
         console.log(!e.is_bot);
@@ -64,7 +64,8 @@ exports.createGame = async function (req, res) {
     });
 
     for (let i = 0; i < assassins.length; i++) {
-        bot.postMessage(assassins[i].id, `your target is ${targets[i].name}`)
+        // bot.postMessage(assassins[i].id, `your target is ${targets[i].name}`)
+        exBot.chat.postMessage({ channcel: assassins[i].id, text: `your target is ${targets[i].name}` })
     }
 
     res.sendStatus(200);
