@@ -3,7 +3,7 @@ var games = require("../controllers/gameController")
 var router = express.Router();
 
 router.post("/games", games.createGame);
-router.post('games', function (req, res) {
+router.get('/games', function (req, res) {
     res.send("hit");
 });
 
