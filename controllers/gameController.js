@@ -35,7 +35,7 @@ exports.createGame = async function (req, res) {
     console.log(channel_id);
     const channel_name = req.body.channel_name;
     await games.create({ channel: channel_id });
-    let assassins = await exBot.usergroups.users.list({ usergroup: channel_id }).users;
+    let assassins = await exBot.usergroups.users.list({ usergroup: channel_id });
     console.log(assassins);
     assassins = shuffle(assassins);
     let targets = [];
