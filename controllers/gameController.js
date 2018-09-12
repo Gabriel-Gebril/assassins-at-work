@@ -16,7 +16,7 @@ exports.createGame = async function (req, res) {
     bot.getChannel(channel_name)
         .then(
             channel => {
-                channel.members.array.forEach(function (e) {
+                channel.members.forEach(function (e) {
                     console.log(e);
                 });
             }
