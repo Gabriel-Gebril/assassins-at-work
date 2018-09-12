@@ -41,6 +41,7 @@ exports.createGame = async function (req, res) {
     for (let i = 0; i < assassins.length; i++) {
         const element = assassins[i];
         let info = await exBot.users.info(element);
+        info = JSON.parse(info);
         assassins[i] = { id: info.user.id, name: info.user.name, is_bot: info.user.is_bot };
     }
     assassins.filter(e => !e.is_bot);
