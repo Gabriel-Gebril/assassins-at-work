@@ -31,29 +31,26 @@ function shuffle(a) {
 exports.createGame = async function (req, res) {
 
     // console.log(req.body);
-    let botids = await exBot.bots.info();
-    console.log(botids);
-    // const channel_id = req.body.channel_id;
-    // console.log(channel_id);
-    // const channel_name = req.body.channel_name;
-    // await games.create({ channel: channel_id });
-    // channel_info = await bot.getChannel(channel_name);
-    // console.log(channel_info);
-    // let assassins = channel_info.members.filter(e => e != botID);
-    // assassins = shuffle(assassins);
-    // let targets = [];
-    // for (let i = 0; i < assassins.length; i++) {
-    //     if (i < assassins.length - 1) {
-    //         targets[i] = assassins[i + 1];
-    //     } else {
-    //         targets[i] = assassins[0];
-    //     }
-    // }
-    // games.add({
-    //     channel: channel_id,
-    //     assassins: assassins,
-    //     targets: targets
-    // });
+    const channel_id = req.body.channel_id;
+    console.log(channel_id);
+    const channel_name = req.body.channel_name;
+    await games.create({ channel: channel_id });
+    let assassins = await exBot.usergroups.users.list(channel_id).users;
+
+    assassins = shuffle(assassins);
+    let targets = [];
+    for (let i = 0; i < assassins.length; i++) {
+        if (i < assassins.length - 1) {
+            targets[i] = assassins[i + 1];
+        } else {
+            targets[i] = assassins[0];
+        }
+    }
+    games.add({
+        channel: channel_id,
+        assassins: assassins,
+        targets: targets
+    });
 
     // for (let i = 0; i < assassins.length; i++) {
     //     bot.postMessage(assassins[i], `your `)
