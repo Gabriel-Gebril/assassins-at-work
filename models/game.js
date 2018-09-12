@@ -7,7 +7,7 @@ exports.create = async function (obj) {
         assassinName VARCHAR(128) NOT NULL,
         targetName VARCHAR(128) NOT NULL,
         marked BOOLEAN DEFAULT FALSE,
-        UNIQUE(assassin)
+        UNIQUE(assassinID)
     )`
     return (await db.query(sql));
 }
