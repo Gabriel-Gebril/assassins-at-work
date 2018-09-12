@@ -65,7 +65,7 @@ exports.createGame = async function (req, res) {
 
     for (let i = 0; i < assassins.length; i++) {
         // bot.postMessage(assassins[i].id, `your target is ${targets[i].name}`)
-        exBot.chat.postMessage({ channcel: assassins[i].id, text: `your target is ${targets[i].name}` })
+        exBot.chat.postMessage({ channel: assassins[i].id, text: `your target is ${targets[i].name}` })
     }
 
     res.sendStatus(200);
