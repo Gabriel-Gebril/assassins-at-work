@@ -1,16 +1,17 @@
 var games = require("../models/game"),
     express = require("express"),
     SlackBot = require('slackbots'),
-    Slack = require('slack');
+    Slack = require('slack'),
+    keys = require('../config/keys.js')
 
 
 const bot = new SlackBot({
-    token: 'xoxb-433184420918-431115080656-2QXNfwtoakG3TnQlznvkA7Hl',
+    token: keys.slack.bot,
     name: "overseeer"
 })
 
 //This slackbot is here to extend the normal bot
-const exBot = new Slack({ token: "xoxp-433184420918-431721615043-431722118451-6fc88091b918e2a560bbaace8a91ddfd" });
+const exBot = new Slack({ token: keys.slack.access });
 
 
 /**
@@ -64,7 +65,7 @@ exports.createGame = async function (req, res) {
 
     for (let i = 0; i < assassins.length; i++) {
         // bot.postMessage(assassins[i].id, `your target is ${targets[i].name}`)
-        exBot.chat.postMessage({ token: 'xoxb-433184420918-431115080656-2QXNfwtoakG3TnQlznvkA7Hl', channel: assassins[i].id, as_user: true, username: 'overseer', text: `your target is ${targets[i].name}` })
+        exBot.chat.postMessage({ token: keys.slack.bot, channel: assassins[i].id, as_user: true, username: 'overseer', text: `your target is ${targets[i].name}` })
     }
 
     res.sendStatus(200);
