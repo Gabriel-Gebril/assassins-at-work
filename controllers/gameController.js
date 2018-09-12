@@ -13,6 +13,7 @@ const bot = new SlackBot({
 //This slackbot is here to extend the normal bot
 const exBot = new Slack({ token: "xoxb-433184420918-431115080656-2QXNfwtoakG3TnQlznvkA7Hl" });
 
+
 /**
  * Shuffles array in place.
  * @param {Array} a items An array containing the items.
@@ -35,7 +36,7 @@ exports.createGame = async function (req, res) {
     console.log(channel_id);
     const channel_name = req.body.channel_name;
     await games.create({ channel: channel_id });
-    let assassins = await exBot.usergroups.users.list({ usergroup: channel_id });
+    let assassins = await exBot.usergroups.users.list({ token: "xoxp-433184420918-431721615043-431722118451-6fc88091b918e2a560bbaace8a91ddfd", usergroup: channel_id });
     console.log(assassins);
     assassins = shuffle(assassins);
     let targets = [];
