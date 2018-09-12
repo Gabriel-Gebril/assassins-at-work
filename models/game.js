@@ -11,8 +11,22 @@ exports.create = async function (obj) {
 }
 
 exports.add = async function (obj) {
+    var assassins = obj.assassins;
+    var targets = obj.targets;
+
+    let values = ``;
+
+    for (let i = 0; i < assassins.length; i++) {
+        if (i < assassins.length - 1) {
+            values += `(${assassins[i]},${targets[i]}),`
+        } else {
+            values += `(${assassins[i]},${targets[i]})`
+        }
+
+    }
+
     var sql = `INSERT INTO ${obj.channel}(assassin,target)
-    VALUES('${obj.newAssassin}','${obj.newTarget}')`;
+    VALUES${values}`;
     return (await db.query(sql));
 }
 

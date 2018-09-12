@@ -6,6 +6,22 @@ const bot = new SlackBot({
     token: "xoxb-433184420918-431115080656-2QXNfwtoakG3TnQlznvkA7Hl",
     name: "overseer"
 });
+
+/**
+ * Shuffles array in place.
+ * @param {Array} a items An array containing the items.
+ */
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+}
+
 exports.createGame = async function (req, res) {
 
     // console.log(req.body);
@@ -17,6 +33,21 @@ exports.createGame = async function (req, res) {
     await games.create({ channel: channel_id });
     channel_info = await bot.getChannel(channel_name);
     console.log(channel_info.members);
+    let assassins = channel_info.members.filter(e => e != botID);
+    assassins = shuffle(assassins);
+    let targets = [];
+    for (let i = 0; i < assassins.length; i++) {
+        if (i < assassins.length - 1) {
+            targets[i] = assassins[i + 1];
+        } else {
+            targets[i] = assassins[0];
+        }
+    }
+    games.add({
+        channel: channel_id,
+        assassins: assassins,
+        targets: targets
+    });
     res.sendStatus(200);
 
 }
