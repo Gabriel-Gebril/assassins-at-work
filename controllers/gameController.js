@@ -8,7 +8,8 @@ const bot = new SlackBot({
 });
 exports.createGame = async function (req, res) {
 
-    console.log(req.body);
+    // console.log(req.body);
+    const botID = await bot.getUserId(bot.name);
     const channel_id = req.body.channel_id;
     console.log(channel_id);
     const channel_name = req.body.channel_name;
