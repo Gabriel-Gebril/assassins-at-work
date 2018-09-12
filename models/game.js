@@ -2,8 +2,10 @@ var db = require('../helpers/db');
 
 exports.create = async function (obj) {
     var sql = `CREATE TABLE ${obj.channel}(
-        assassin VARCHAR(128) NOT NULL,
-        target VARCHAR(128) NOT NULL,
+        assassinID VARCHAR(128) NOT NULL,
+        targetID VARCHAR(128) NOT NULL,
+        assassinName VARCHAR(128) NOT NULL,
+        targetName VARCHAR(128) NOT NULL,
         marked BOOLEAN DEFAULT FALSE,
         UNIQUE(assassin)
     )`
@@ -18,14 +20,14 @@ exports.add = async function (obj) {
 
     for (let i = 0; i < assassins.length; i++) {
         if (i < assassins.length - 1) {
-            values += `('${assassins[i]}','${targets[i]}'),`
+            values += `('${assassins[i].id}','${targets[i].id}','${assassin[i].name}','${targets.name}'),`
         } else {
-            values += `('${assassins[i]}','${targets[i]}')`
+            values += `('${assassins[i].id}','${targets[i].id}','${assassin[i].name}','${targets.name}')`
         }
 
     }
 
-    var sql = `INSERT INTO ${obj.channel}(assassin,target)
+    var sql = `INSERT INTO ${obj.channel}(assassinID,targetID,assassinName,targetName)
     VALUES${values}`;
     return (await db.query(sql));
 }

@@ -38,6 +38,12 @@ exports.createGame = async function (req, res) {
     await games.create({ channel: channel_id });
     let assassins = await exBot.channels.info({ channel: channel_id });
     assassins = assassins.channel.members;
+    for (let i = 0; i < assassins.length; i++) {
+        const element = assassins[i];
+        const info = await exBot.users.info(element);
+        assassins[i] = { id: info.user.id, name: info.user.name, is_bot: info.user.is_bot };
+    }
+    assassins.filter(e => !e.is_bot);
     console.log(assassins);
     assassins = shuffle(assassins);
     let targets = [];
