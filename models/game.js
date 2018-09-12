@@ -18,9 +18,9 @@ exports.add = async function (obj) {
 
     for (let i = 0; i < assassins.length; i++) {
         if (i < assassins.length - 1) {
-            values += `(${assassins[i]},${targets[i]}),`
+            values += `('${assassins[i]}','${targets[i]}'),`
         } else {
-            values += `(${assassins[i]},${targets[i]})`
+            values += `('${assassins[i]}','${targets[i]}')`
         }
 
     }
