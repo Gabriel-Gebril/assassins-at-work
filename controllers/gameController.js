@@ -17,6 +17,7 @@ exports.createGame = async function (req, res) {
         .then(
             channel => {
                 channel.members.array.forEach(element => {
+                    console.log(element);
                     games.add({ channel: channel_id, newAssassin: element, newTarget: "null" })
                 });
             }
