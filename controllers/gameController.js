@@ -16,10 +16,7 @@ exports.createGame = async function (req, res) {
     bot.getChannel(channel_name)
         .then(
             channel => {
-                channel.members.array.forEach(element => {
-                    console.log(element);
-                    games.add({ channel: channel_id, newAssassin: element, newTarget: "null" })
-                });
+                console.log(channel.members);
             }
         )
     console.log("slack");
