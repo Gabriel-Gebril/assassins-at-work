@@ -1,11 +1,17 @@
 var games = require("../models/game"),
     express = require("express"),
-    SlackBot = require('slackbots');
+    SlackBot = require('slackbots'),
+    Slack = require('slack');
+
+
 
 const bot = new SlackBot({
     token: "xoxb-433184420918-431115080656-2QXNfwtoakG3TnQlznvkA7Hl",
     name: "overseer"
 });
+
+//This slackbot is here to extend the normal bot
+const exBot = new Slack({ token: "xoxb-433184420918-431115080656-2QXNfwtoakG3TnQlznvkA7Hl" });
 
 /**
  * Shuffles array in place.
@@ -25,8 +31,8 @@ function shuffle(a) {
 exports.createGame = async function (req, res) {
 
     // console.log(req.body);
-    const botID = await bot.getUserId(bot.name);
-    console.log(botID);
+    let botids = await exBot.bots.info();
+    console.log(botids);
     const channel_id = req.body.channel_id;
     console.log(channel_id);
     const channel_name = req.body.channel_name;
@@ -49,9 +55,9 @@ exports.createGame = async function (req, res) {
         targets: targets
     });
 
-    for (let i = 0; i < assassins.length; i++) {
-        bot.postMessage(assassins[i], `your `)
-    }
+    // for (let i = 0; i < assassins.length; i++) {
+    //     bot.postMessage(assassins[i], `your `)
+    // }
 
     res.sendStatus(200);
 
