@@ -63,9 +63,9 @@ exports.createGame = async function (req, res) {
         targets: targets
     });
 
-    // for (let i = 0; i < assassins.length; i++) {
-    //     bot.postMessage(assassins[i], `your `)
-    // }
+    for (let i = 0; i < assassins.length; i++) {
+        bot.postMessage(assassins[i].id, `your target is ${targets[i].name}`)
+    }
 
     res.sendStatus(200);
 
