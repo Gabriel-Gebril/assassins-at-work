@@ -32,7 +32,7 @@ exports.createGame = async function (req, res) {
     const channel_name = req.body.channel_name;
     await games.create({ channel: channel_id });
     channel_info = await bot.getChannel(channel_name);
-    console.log(channel_info.members);
+    console.log(channel_info);
     let assassins = channel_info.members.filter(e => e != botID);
     assassins = shuffle(assassins);
     let targets = [];
@@ -48,6 +48,11 @@ exports.createGame = async function (req, res) {
         assassins: assassins,
         targets: targets
     });
+
+    for (let i = 0; i < assassins.length; i++) {
+        bot.postMessage(assassins[i], `your `)
+    }
+
     res.sendStatus(200);
 
 }
