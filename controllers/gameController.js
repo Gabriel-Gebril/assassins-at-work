@@ -13,15 +13,8 @@ exports.createGame = async function (req, res) {
     console.log(channel_id);
     const channel_name = req.body.channel_name;
     await games.create({ channel: channel_id });
-    bot.getChannel(channel_name)
-        .then(
-            channel => {
-                channel.members.forEach(function (e) {
-                    console.log(e);
-                });
-            }
-        )
-    console.log("slack");
+    channel_info = await bot.getChannel(channel_name);
+    console.log(channel_info.members);
     res.sendStatus(200);
 
 }
