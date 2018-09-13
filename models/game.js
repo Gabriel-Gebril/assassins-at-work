@@ -1,7 +1,7 @@
 var db = require('../helpers/db');
 
 exports.create = async function (obj) {
-    var sql = `CREATE TABLE ${obj.channel}(
+    var sql = `CREATE TABLE IF NOT EXISTS ${obj.team}(
         assassinID VARCHAR(128) NOT NULL,
         targetID VARCHAR(128) NOT NULL,
         assassinName VARCHAR(128) NOT NULL,
@@ -27,7 +27,7 @@ exports.add = async function (obj) {
 
     }
 
-    var sql = `INSERT INTO ${obj.channel}(assassinID,targetID,assassinName,targetName)
+    var sql = `INSERT INTO ${obj.team}(assassinID,targetID,assassinName,targetName)
     VALUES${values}`;
     return (await db.query(sql));
 }
@@ -38,15 +38,15 @@ exports.update = async function (obj) {
 }
 
 exports.find = async function (obj) {
-    var sql = `SELECT * FROM ${obj.channel} WHERE ${obj.atr} = '${obj.value}'`
+    var sql = `SELECT * FROM ${obj.team} WHERE ${obj.atr} = '${obj.value}'`
 }
 
 exports.removeByA = async function (obj) {
-    var sql = `DELETE FROM ${obj.channel} WHERE assassin='${obj.assassin}'`;
+    var sql = `DELETE FROM ${obj.team} WHERE assassin='${obj.assassin}'`;
     return (await db.query(sql));
 }
 
 exports.removeByT = async function (obj) {
-    var sql = `DELETE FROM ${obj.channel} WHERE target='${obj.target}'`;
+    var sql = `DELETE FROM ${obj.team} WHERE target='${obj.target}'`;
     return (await db.query(sql));
 }

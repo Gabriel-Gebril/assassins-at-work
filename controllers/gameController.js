@@ -1,23 +1,23 @@
 var games = require("../models/game"),
-    express = require("express"),
     SlackBot = require('slackbots'),
     Slack = require('slack'),
-    keys = require('../config/keys.js')
+    keys = require('../config/keys.js'),
+    tokens = require("../models/tokens");
 
 
-const bot = new SlackBot({
-    token: keys.slack.bot,
-    name: "overseeer"
-})
+// const bot = new SlackBot({
+//     token: keys.slack.bot,
+//     name: "overseeer"
+// })
 
-//This slackbot is here to extend the normal bot
-const exBot = new Slack({ token: keys.slack.access });
+// //This slackbot is here to extend the normal bot
+// const exBot = new Slack({ token: keys.slack.access });
 
 
-/**
- * Shuffles array in place.
- * @param {Array} a items An array containing the items.
- */
+// /**
+//  * Shuffles array in place.
+//  * @param {Array} a items An array containing the items.
+//  */
 function shuffle(a) {
     var j, x, i;
     for (i = a.length - 1; i > 0; i--) {
@@ -31,11 +31,30 @@ function shuffle(a) {
 
 exports.createGame = async function (req, res) {
 
+    res.send({ "response_type": "in_channel" });
+    console.log(req.body)
+    const team_id = req.body.team_id;
+    console.log(team_id);
+    let token = await tokens.findByTokenID({ tokenID: team_id.toUpperCase() });
+    token = token.rows[0];
+    console.log(token);
+    const bot = new SlackBot({
+        token: token.bottoken,
+        name: "overseeer"
+    })
+
+    //This slackbot is here to extend the normal bot
+    const exBot = new Slack({ token: token.accesstoken });
+
+
+    exBot.channel.invite()
+
     // console.log(req.body);
     const channel_id = req.body.channel_id;
+
     console.log(channel_id);
-    const channel_name = req.body.channel_name;
-    await games.create({ channel: channel_id });
+    // const channel_name = req.body.channel_name;
+    await games.create({ team: team_id }).catch(err => res.send("A game is already going on in your workspace."));
     let assassins = await exBot.channels.info({ channel: channel_id });
     assassins = assassins.channel.members;
     for (let i = 0; i < assassins.length; i++) {
@@ -58,16 +77,19 @@ exports.createGame = async function (req, res) {
         }
     }
     games.add({
-        channel: channel_id,
+        team: team_id,
         assassins: assassins,
         targets: targets
-    });
+    }).then(res => {
+        for (let i = 0; i < assassins.length; i++) {
+            // bot.postMessage(assassins[i].id, `your target is ${targets[i].name}`)
+            exBot.chat.postMessage({ token: token.bottoken, channel: assassins[i].id, as_user: true, username: 'overseer', text: `your target is ${targets[i].name}` })
+        }
 
-    for (let i = 0; i < assassins.length; i++) {
-        // bot.postMessage(assassins[i].id, `your target is ${targets[i].name}`)
-        exBot.chat.postMessage({ token: keys.slack.bot, channel: assassins[i].id, as_user: true, username: 'overseer', text: `your target is ${targets[i].name}` })
-    }
+    }).catch(err => console.log(err));
 
-    res.sendStatus(200);
+
+
+
 
 }

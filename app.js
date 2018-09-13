@@ -27,7 +27,7 @@ app.get('/', function (req, res) {
     res.sendFile('test.html', { root: './public' });
 });
 
-app.use("/slack/api", slackRoutes)
+app.use("/slack", slackRoutes)
 
 
 app.listen(3000, console.log(3000));
