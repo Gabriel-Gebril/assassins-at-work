@@ -19,5 +19,7 @@ exports.auth = function (code) {
     return (request(options))
         .then(res => {
             tokens.add(res);
+            const exBot = new Slack({ token: res });
+            exBot.auth.test({ res });
         });
 }
