@@ -110,6 +110,13 @@ exports.createGame = async function (req, res) {
 
 }
 
+getGameState = async function (team) {
+    let state = await games.get({ team });
+    state = state.rows;
+
+    return state;
+}
+
 exports.updateGameState = async function (req, res) {
 
 
@@ -124,14 +131,54 @@ exports.updateGameState = async function (req, res) {
     let userInfo = await games.find({ team: team, atr: 'assassinid', value: req.body.user_id }).catch(err => valid = false);
     userInfo = userInfo.rows[0]
     // console.log(userInfo)
-    let assassinInfo = await games.find({ team: team, atr: 'assassinid', value: userInfo.targetid }).catch(err => valid = false);
-    assassinInfo = assassinInfo.rows[0]
+    let targetInfo = await games.find({ team: team, atr: 'assassinid', value: userInfo.targetid }).catch(err => valid = false);
+    targetInfo = targetInfo.rows[0]
+    let assailantInfo = await games.find({ team: team, atr: 'assassinid', value: userInfo.assailantid }).catch(err => valid = false);
+    assailantInfo = assailantInfo.rows[0]
 
     if (valid) {
         if (req.body.command === "/dead") {
-
+            if (!userInfo.dead && !userInfo.killed) {
+                res.send("You've been marked!")
+                games.update({ team: team, atr: 'dead', value: 'TRUE', identifier: "assassinid", identity: userInfo.assassinid })
+                exBot.chat.postMessage({ token: token.bottoken, channel: assailantInfo.assassinid, as_user: true, username: 'overseer', text: `Your target has marked themselves as dead! Please type in /killed to confirm you killed them!` })
+            } else if (userInfo.dead) {
+                res.send("You've already marked yourself! The person who eliminated you should type in /killed to confirm your elimination!")
+            } else if (userInfo.killed) {
+                res.send("You're dead!")
+                games.removeByA({ team: team, assassin: userInfo.assassinid });
+                let state = await getGameState(team);
+                // console.log(state.length);
+                if (state.length === 1) {
+                    exBot.chat.postMessage({ token: token.bottoken, channel: userInfo.ogc, as_user: true, username: 'overseer', text: `The winner is ${state[0].assassinname}!` });
+                    games.drop({ team });
+                } else {
+                    games.update({ team, atr: 'targetid', value: userInfo.targetid, identifier: 'assassinid', identity: assailantInfo.assassinid });
+                    games.update({ team, atr: 'targetname', value: userInfo.targetname, identifier: 'assassinid', identity: assailantInfo.assassinid });
+                    exBot.chat.postMessage({ token: token.bottoken, channel: assailantInfo.assassinid, as_user: true, username: 'overseer', text: `The your next target is ${userInfo.targetname}!` })
+                }
+            }
         } else if (req.body.command === "/killed") {
-
+            if (!targetInfo.killed && !targetInfo.dead) {
+                res.send("You've marked your target!")
+                games.update({ team: team, atr: 'killed', value: 'TRUE', identifier: "assassinid", identity: targetInfo.assassinid })
+                exBot.chat.postMessage({ token: token.bottoken, channel: userInfo.targetid, as_user: true, username: 'overseer', text: `Your assailant has marked you as dead! Please type /dead to confirm!` })
+            } else if (targetInfo.killed) {
+                res.send("You've already marked yourself! The person who eliminated you should type in /killed to confirm your elimination!")
+            } else if (targetInfo.dead) {
+                res.send("Target eliminated!")
+                games.removeByA({ team: team, assassin: targetInfo.assassinid }).catch(err => console.log(err));
+                let state = await getGameState(team);
+                // console.log(state.length);
+                if (state.length === 1) {
+                    exBot.chat.postMessage({ token: token.bottoken, channel: userInfo.ogc, as_user: true, username: 'overseer', text: `The winner is ${state[0].assassinname}!` });
+                    games.drop({ team });
+                } else {
+                    games.update({ team, atr: 'targetid', value: targetInfo.targetid, identifier: 'assassinid', identity: userInfo.assassinid });
+                    games.update({ team, atr: 'targetname', value: targetInfo.targetname, identifier: 'assassinid', identity: userInfo.assassinid });
+                    exBot.chat.postMessage({ token: token.bottoken, channel: userInfo.assassinid, as_user: true, username: 'overseer', text: `The your next target is ${targetInfo.targetname}!` })
+                }
+            }
         }
 
 
