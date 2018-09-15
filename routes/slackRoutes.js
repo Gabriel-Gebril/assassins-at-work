@@ -20,6 +20,8 @@ router.get('/auth', function (req, res) {
     res.send("authed");
 });
 
+router.post('/api/games/update', games.updateGameState);
+
 
 
 
