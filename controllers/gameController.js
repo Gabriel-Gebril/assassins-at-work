@@ -174,6 +174,7 @@ exports.updateGameState = async function (req, res) {
                     exBot.chat.postMessage({ token: token.bottoken, channel: userInfo.ogc, as_user: true, username: 'overseer', text: `The winner is ${state[0].assassinname}!` });
                     games.drop({ team });
                 } else {
+                    exBot.chat.postMessage({ token: token.bottoken, channel: userInfo.targetid, as_user: true, username: 'overseer', text: `You're dead!` });
                     games.update({ team, atr: 'targetid', value: targetInfo.targetid, identifier: 'assassinid', identity: userInfo.assassinid });
                     games.update({ team, atr: 'targetname', value: targetInfo.targetname, identifier: 'assassinid', identity: userInfo.assassinid });
                     exBot.chat.postMessage({ token: token.bottoken, channel: userInfo.assassinid, as_user: true, username: 'overseer', text: `The your next target is ${targetInfo.targetname}!` })
