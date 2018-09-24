@@ -155,7 +155,7 @@ exports.updateGameState = async function (req, res) {
                 } else {
                     games.update({ team, atr: 'targetid', value: userInfo.targetid, identifier: 'assassinid', identity: assailantInfo.assassinid });
                     games.update({ team, atr: 'targetname', value: userInfo.targetname, identifier: 'assassinid', identity: assailantInfo.assassinid });
-                    exBot.chat.postMessage({ token: token.bottoken, channel: assailantInfo.assassinid, as_user: true, username: 'overseer', text: `The your next target is ${userInfo.targetname}!` })
+                    exBot.chat.postMessage({ token: token.bottoken, channel: assailantInfo.assassinid, as_user: true, username: 'overseer', text: `Your next target is ${userInfo.targetname}!` })
                 }
             }
         } else if (req.body.command === "/killed") {
